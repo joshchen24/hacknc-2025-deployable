@@ -20,13 +20,19 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   useEffect(() => {
     let mounted = true
 
+    // If Supabase isn't configured, skip auth wiring to avoid runtime errors
+    if (!supabase) {
+      setLoading(false)
+      return () => { mounted = false }
+    }
+
     // Check initial auth state (Supabase v2)
     ;(async () => {
       try {
         const { data } = await supabase.auth.getSession()
         if (!mounted) return
         setUser(data.session?.user ?? null)
-      } catch (e) {
+      } catch (_e) {
         // ignore
       } finally {
         if (mounted) setLoading(false)
@@ -56,7 +62,9 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const signOut = async () => {
     try {
-      await supabase.auth.signOut()
+      if (supabase) {
+        await supabase.auth.signOut()
+      }
     } catch (e) {
       console.error('Error signing out', e)
     }
