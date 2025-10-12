@@ -1,14 +1,17 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  // We don't throw here because in some environments (like CI) env vars may not be present.
-  // Consumers should handle null/undefined client or ensure env is configured.
-  console.warn("Supabase environment variables are not set.");
+let supabase: SupabaseClient | null = null;
+if (supabaseUrl && supabaseAnonKey) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+} else {
+  // Avoid creating a client with empty strings at build time (Vercel) – defer until envs exist
+  if (typeof console !== "undefined") {
+    console.warn("Supabase environment variables are not set. Features depending on Supabase are disabled until configured.");
+  }
 }
 
-export const supabase = createClient(supabaseUrl ?? "", supabaseAnonKey ?? "");
-
+export { supabase };
 export default supabase;
