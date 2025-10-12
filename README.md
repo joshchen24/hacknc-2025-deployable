@@ -24,7 +24,6 @@ A web-based chiptune sequencer with AI-assisted composition. Build catchy 8‑bi
 - Node.js 18+ and npm
 - Supabase project with a `projects` table (schema below)
 - Google AI Studio API key (Gemini)
-- Optional: Python model server for next‑note prediction
 
 ### Environment Variables
 Create a `.env.local` in the project root with:
@@ -112,6 +111,21 @@ TypeScript types are in `src/types/project.ts`.
 - Ensure browser audio starts after a user gesture; `useToneSequencer` handles `Tone.start()`.
 - `duration_data` is optional to support older saves; UI will default sustain to 1.
 - Instrument notes are constrained to chip‑style ranges defined in `index.tsx`.
+
+## AI Assistance Disclosure
+
+- We used several AI tools throughout the project for development, debugging, and documentation:
+
+- ChatGPT (OpenAI GPT-5) — assisted with integrating the `Gemini API`, managing `Supabase` state, and structuring API routes in `Next.js`. Also used to improve this README’s clarity and formatting.
+
+- Claude (Anthropic, via CLI) — helped with code cleanup, debugging tone.js playback scheduling, and refining TypeScript typings.
+
+- Cursor AI — provided in-editor code completions for layout structure, `CSS styling`, and UI logic in `React` components.
+
+- GitHub Copilot — supported repetitive scaffolding, prop management, and type inference across the project.
+
+- AI tools were used to assist in writing, refactoring, and documenting code, not to autonomously produce core functionality.
+All code, logic, and design decisions were reviewed, customized, and validated by our team.
 
 ## Screenshots (optional)
 Add screenshots to `public/` and reference them here.
