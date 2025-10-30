@@ -115,15 +115,15 @@ export default function Home() {
   const router = useRouter();
 
   // Steps + grids
-  const [steps, setSteps] = useState<number>(64);
+  const [steps, setSteps] = useState<number>(24);
   const [grid, setGrid] = useState<boolean[][][]>(() =>
     INSTRUMENTS.map(inst =>
-      Array.from({ length: inst.pitchCount }, () => Array(64).fill(false))
+      Array.from({ length: inst.pitchCount }, () => Array(24).fill(false))
     )
   );
   const [durationGrid, setDurationGrid] = useState<number[][][]>(() =>
     INSTRUMENTS.map(inst =>
-      Array.from({ length: inst.pitchCount }, () => Array(64).fill(1))
+      Array.from({ length: inst.pitchCount }, () => Array(24).fill(1))
     )
   );
 
@@ -135,7 +135,7 @@ export default function Home() {
   );
 
   // RAG prompt
-  const [gemPrompt, setGemPrompt] = useState<string>("");
+  const [gemPrompt, setGemPrompt] = useState<string>("complete the melody");
   const [isComposing, setIsComposing] = useState<boolean>(false);
 
   // Hooks (audio + project)
@@ -175,7 +175,7 @@ export default function Home() {
           setCurrentProjectId(p.id);
           setProjectName(p.name);
           if (p.grid_data && Array.isArray(p.grid_data)) {
-            const loadedSteps = p.grid_data[0]?.[0]?.length || 64;
+            const loadedSteps = p.grid_data[0]?.[0]?.length || 24;
             setSteps(loadedSteps);
             setGrid(p.grid_data);
           }
@@ -185,7 +185,7 @@ export default function Home() {
             setDurationGrid(
               INSTRUMENTS.map((inst, iIdx) =>
                 Array.from({ length: inst.pitchCount }, (_, pIdx) =>
-                  Array(p.grid_data[iIdx]?.[pIdx]?.length || 64).fill(1)
+                  Array(p.grid_data[iIdx]?.[pIdx]?.length || 24).fill(1)
                 )
               )
             );
@@ -547,18 +547,18 @@ export default function Home() {
             <p className="text-sm text-purple-200 mb-2">
               Start a melody and AI will continue your creation, or compose from scratch with full automation!
             </p>
-            <div className="flex gap-3 items-stretch">
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch">
               <input
                 value={gemPrompt}
                 onChange={(e) => setGemPrompt(e.target.value)}
                 placeholder='Try: "upbeat overworld theme" or "spooky dungeon music"'
-                className="flex-1 px-4 py-3 rounded-lg border-4 border-purple-600 bg-white text-black text-lg font-medium placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:flex-1 min-w-0 px-4 py-3 rounded-lg border-4 border-purple-600 bg-white text-black text-lg font-medium placeholder:text-gray-400 focus:outline-none focus:ring-4 focus:ring-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isComposing || isPlaying || isLoading}
               />
               <button
                 onClick={composeWithRag}
                 disabled={isPlaying || isLoading || isComposing}
-                className="px-8 py-3 text-lg font-bold bg-yellow-400 hover:bg-yellow-500 text-black border-4 border-yellow-600 shadow-[4px_4px_0px_rgba(139,105,20,1)] disabled:opacity-50 disabled:cursor-not-allowed active:translate-x-1 active:translate-y-1 active:shadow-none transition-all rounded-lg whitespace-nowrap"
+                className="w-full sm:w-auto px-8 py-3 text-lg font-bold bg-yellow-400 hover:bg-yellow-500 text-black border-4 border-yellow-600 shadow-[4px_4px_0px_rgba(139,105,20,1)] disabled:opacity-50 disabled:cursor-not-allowed active:translate-x-1 active:translate-y-1 active:shadow-none transition-all rounded-lg whitespace-normal sm:whitespace-nowrap"
                 title="Use AI to compose music across all instruments"
               >
                 {isComposing ? (
