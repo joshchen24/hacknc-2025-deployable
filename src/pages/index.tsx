@@ -128,8 +128,8 @@ export default function Home() {
   );
 
   // Tempo + volumes
-  const [bpm, setBpm] = useState<number>(120);
-  const [bpmInput, setBpmInput] = useState<string>("120");
+  const [bpm, setBpm] = useState<number>(90);
+  const [bpmInput, setBpmInput] = useState<string>("90");
   const [volumes, setVolumes] = useState<number[]>(
     Array.from({ length: INSTRUMENTS.length }, (_, i) => (i === 1 ? 80 : 70))
   );
