@@ -82,6 +82,9 @@ export default function Login() {
         const result = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/login`,
+          },
         });
 
         if (result.error) {
