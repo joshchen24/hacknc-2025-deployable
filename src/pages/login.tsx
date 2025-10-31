@@ -83,7 +83,7 @@ export default function Login() {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/login`,
+            emailRedirectTo: 'https://8bitbeat.biz/login',
           },
         });
 
